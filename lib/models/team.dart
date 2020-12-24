@@ -15,7 +15,9 @@ class Team {
       name: json['name'],
       shortCode: json['short_code'],
       logo: json['logo'],
-      country: Country.fromJson(json['country']),
+      country: json.containsKey(['country'])
+          ? Country.fromJson(json['country'])
+          : null,
     );
   }
 }

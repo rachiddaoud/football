@@ -3,6 +3,7 @@ import 'standings_screen.dart';
 import 'teams_screen.dart';
 import 'countries_screen.dart';
 import 'leagues_screen.dart';
+import 'matches_screen.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -16,8 +17,9 @@ class _HomeState extends State<Home> {
   final List<Widget> _children = [
     StandingsScreen(),
     TeamsScreen(),
-    LeaguesScreen(),
-    CountriesScreen(),
+    MatchesScreen(),
+    //LeaguesScreen(),
+    //CountriesScreen(),
   ];
   void onTabTapped(int index) {
     setState(() {
@@ -46,7 +48,7 @@ class _HomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.military_tech),
-            label: 'Leagues',
+            label: 'Match',
           ),
         ],
       ),

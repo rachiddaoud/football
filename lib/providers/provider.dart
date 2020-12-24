@@ -3,8 +3,35 @@ import 'package:football/models/league.dart';
 import 'package:football/models/standing.dart';
 import '../models/country.dart';
 import '../models/team.dart';
+import '../models/match.dart';
 import 'package:flutter/services.dart' show rootBundle;
 //import 'package:http/http.dart' as http;
+
+Future<List<Match>> fetchMatches() async {
+  List<Match> models = new List<Match>();
+  final response = await rootBundle.loadString('assets/json/matches.json');
+  var leagues = await fetchLeagues();
+  for (final data in jsonDecode(response)['data']) {
+    models.add(Match.fromJson(
+      data,
+      leagues.where((i) => i.id == data['league_id']).single,
+    ));
+  }
+  return models;
+  /*final response = await http.get(
+      'https://app.sportdataapi.com/api/v1/soccer/matches?apikey=8b91bcd0-42cc-11eb-9310-5942502ad1e8&season_id=15');
+
+  if (response.statusCode == 200) {
+    var contriesJson = jsonDecode(response.body);
+    final data = contriesJson['data'];
+    for (final keyName in data.keys) {
+      models.add(Country.fromJson(data[keyName]));
+    }
+    return models;
+  } else {
+    throw Exception('Failed to load countries');
+  }*/
+}
 
 Future<List<Country>> fetchCountries() async {
   List<Country> models = new List<Country>();
