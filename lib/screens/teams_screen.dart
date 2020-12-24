@@ -28,8 +28,9 @@ class _MyAppState extends State<TeamsScreen> {
 
               return Card(
                   child: ListTile(
-                leading: Image(
-                  image: NetworkImage(item.logo),
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(item.logo),
+                  radius: 40.0,
                 ),
                 title: Text("${item.name}"),
                 subtitle: Text("${item.shortCode}"),

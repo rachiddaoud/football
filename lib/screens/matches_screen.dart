@@ -27,10 +27,19 @@ class _MyAppState extends State<MatchesScreen> {
               final match = snapshot.data[index];
               return Card(
                   child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image(image: NetworkImage(match.homeTeam.logo)),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(match.homeTeam.logo),
+                    radius: 20.0,
+                  ),
+                  SizedBox(width: 20.0),
                   Text(match.ftScore != null ? match.ftScore : ' - '),
-                  Image(image: NetworkImage(match.awayTeam.logo)),
+                  SizedBox(width: 20.0),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(match.awayTeam.logo),
+                    radius: 20.0,
+                  ),
                 ],
               ));
             },
