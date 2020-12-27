@@ -39,6 +39,7 @@ class Match {
   factory Match.fromJson(Map<String, dynamic> json, league) {
     return Match(
       id: json['match_id'],
+      matchStart: json['matchStart'],
       statusCode: json['status_code'],
       status: json['status'],
       league: league,
