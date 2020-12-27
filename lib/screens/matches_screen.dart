@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:football/widgets/dayMatches.dart';
 import '../providers/provider.dart' as provider;
 import '../models/match.dart';
 
@@ -17,32 +18,20 @@ class _MyAppState extends State<MatchesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Match>>(
+    return FutureBuilder<List<List<Match>>>(
       future: provider.fetchMatches(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, index) {
-              final match = snapshot.data[index];
-              return Card(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(match.homeTeam.logo),
-                    radius: 20.0,
-                  ),
-                  SizedBox(width: 20.0),
-                  Text(match.ftScore != null ? match.ftScore : ' - '),
-                  SizedBox(width: 20.0),
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(match.awayTeam.logo),
-                    radius: 20.0,
-                  ),
-                ],
-              ));
-            },
+          final matchesPerDay = snapshot.data;
+          return ListView(
+            children: matchesPerDay
+                .map((matches) => Column(
+                      children: [
+                        Text(matches[0].matchStart.toString()),
+                        DayMatches(matches)
+                      ],
+                    ))
+                .toList(),
           );
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");

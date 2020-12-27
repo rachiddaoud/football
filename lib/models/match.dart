@@ -5,7 +5,7 @@ class Match {
   final int id;
   final int statusCode;
   final String status;
-  final String matchStart;
+  final DateTime matchStart;
   final League league;
   final Team homeTeam;
   final Team awayTeam;
@@ -39,7 +39,7 @@ class Match {
   factory Match.fromJson(Map<String, dynamic> json, league) {
     return Match(
       id: json['match_id'],
-      matchStart: json['matchStart'],
+      matchStart: DateTime.parse(json['match_start']),
       statusCode: json['status_code'],
       status: json['status'],
       league: league,

@@ -7,7 +7,7 @@ import '../models/match.dart';
 import 'package:flutter/services.dart' show rootBundle;
 //import 'package:http/http.dart' as http;
 
-Future<List<Match>> fetchMatches() async {
+Future<List<List<Match>>> fetchMatches() async {
   List<Match> models = new List<Match>();
   final response = await rootBundle.loadString('assets/json/matches.json');
   var leagues = await fetchLeagues();
@@ -17,9 +17,24 @@ Future<List<Match>> fetchMatches() async {
       leagues.where((i) => i.id == data['league_id']).single,
     ));
   }
-  return models;
+  models.sort((a, b) => a.matchStart.isBefore(b.matchStart) ? 1 : -1);
+  List<String> days = models
+      .map((item) =>
+          "${item.matchStart.year.toString()}-${item.matchStart.month.toString().padLeft(2, '0')}-${item.matchStart.day.toString().padLeft(2, '0')}")
+      .toSet()
+      .toList();
+
+  List<List<Match>> matchesPerDate = new List<List<Match>>();
+  for (var day in days) {
+    matchesPerDate.add(models
+        .where((item) =>
+            day ==
+            "${item.matchStart.year.toString()}-${item.matchStart.month.toString().padLeft(2, '0')}-${item.matchStart.day.toString().padLeft(2, '0')}")
+        .toList());
+  }
+  return matchesPerDate;
   /*final response = await http.get(
-      'https://app.sportdataapi.com/api/v1/soccer/matches?apikey=8b91bcd0-42cc-11eb-9310-5942502ad1e8&season_id=15');
+      'https://app.sportdataapi.com/api/v1/soccer/matches?apikey=8b91bcd0-42cc-11eb-9310-5942502ad1e8&season_id=1667');
 
   if (response.statusCode == 200) {
     var contriesJson = jsonDecode(response.body);
@@ -75,7 +90,7 @@ Future<List<Standing>> fetchStandings() async {
   models.sort((a, b) => b.points - a.points);
   return models;
   /*final response = await http.get(
-      'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=8b91bcd0-42cc-11eb-9310-5942502ad1e8&season_id=15');
+      'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=8b91bcd0-42cc-11eb-9310-5942502ad1e8&season_id=1667');
 
   if (response.statusCode == 200) {
     var json = jsonDecode(response.body);
