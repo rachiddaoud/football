@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:football/models/league.dart';
 import 'package:football/models/standing.dart';
+import 'package:intl/intl.dart';
 import '../models/country.dart';
 import '../models/team.dart';
 import '../models/match.dart';
@@ -18,19 +19,13 @@ Future<List<List<Match>>> fetchMatches() async {
     ));
   }
   models.sort((a, b) => a.matchStart.isBefore(b.matchStart) ? 1 : -1);
-  List<String> days = models
-      .map((item) =>
-          "${item.matchStart.year.toString()}-${item.matchStart.month.toString().padLeft(2, '0')}-${item.matchStart.day.toString().padLeft(2, '0')}")
-      .toSet()
-      .toList();
-
+  final df = new DateFormat('dd-MM-yyyy');
+  List<String> days =
+      models.map((item) => df.format(item.matchStart)).toSet().toList();
   List<List<Match>> matchesPerDate = new List<List<Match>>();
   for (var day in days) {
-    matchesPerDate.add(models
-        .where((item) =>
-            day ==
-            "${item.matchStart.year.toString()}-${item.matchStart.month.toString().padLeft(2, '0')}-${item.matchStart.day.toString().padLeft(2, '0')}")
-        .toList());
+    matchesPerDate.add(
+        models.where((item) => day == df.format(item.matchStart)).toList());
   }
   return matchesPerDate;
   /*final response = await http.get(
